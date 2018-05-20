@@ -1,0 +1,11 @@
+{
+    "name":"proyecto",
+    "main":"views/index.html",
+    "window":{
+        "title": "buscador",
+        "width": 650,
+        "height": 500,
+        "min_width":500,
+        "min_height":500
+    }
+}
