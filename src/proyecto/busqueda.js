@@ -1,8 +1,9 @@
 function getJSON(url){
     var req = new XMLHttpRequest();
     
-    req.open("GET",url,false);
+    req.open("GET", url, false);
     req.send(null);
+    
     if(req.status == 200){
         return req.responseText; 
     }else{
@@ -14,7 +15,7 @@ function saveImageto(path, imagen){
         var fs= require('fs');
         var request = require('request');
         request(imagen).on('error', function(err) {
-            console.log(err)
+            console.log(err);
         }).pipe(fs.createWriteStream(path));
 }
 
@@ -33,31 +34,36 @@ $(document).ready(function()    {
         $('#resultado').html("");
         
         if(json == null){
-            html = '<label>No hay resultados para la busqueda: "' + termino + '"</label>';
+            html = '<span class="col-12">No hay resultados para la busqueda: "' + termino + '"</span>';
         }else{
             json.forEach(function(obj){
                 vector.push(obj);
                 url = '"https://static.arasaac.org/pictograms/' + obj.idPictogram + '_300.png"';
                 nombre = obj.keywords[0].keyword;
-                html += '<div class="col-4"><img id="' + id + '" src=' + url + ' class="img-thumbnail" name="pictograma"><label>' + nombre + '</label><br/><label>Size:  </label><select class="selectpicker"><option value="300">300</option><option value="500">500</option><option value="2500">2500</option></select><button type="button" id="' + obj.idPictogram + '" name="guardar">Descargar</button></div>';
-                if((id+1)%3 == 0){
-                    html = '<div class="row">' + html + '</div>'; $('#resultado').append(html); 
-                    html="";
-                }
+                
+                html += '<div class="shownPicto col-4 col-sm-3 col-lg-2"><img id="' + id + '" src=' + url + ' class="img-thumbnail btn btn-outline-info" name="pictograma"><span>' + nombre + '</span><br/><form ><span>Size:  </span><select class="form-control-sm selectpicker btn-outline-info mb-2"><option value="300">300</option><option value="500">500</option><option value="2500">2500</option></select></form><button type="button" idPicto="' + obj.idPictogram + '" name="guardar" picto="' + nombre + ' " class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-save"></i> Download</button></div>';
+                
                 id++;
             });
 
             html = '<div class="row">' + html + '</div>';
         }
         
-        $('#resultado').append(html); html="";
+        $('#resultado').append(html);
         
         id=0;
-        vector.forEach(function(a){
+        vector.forEach(function(aux){
             identificador = "#" + id;
-            $(identificador).data("json", a);
+            $(identificador).data("json", aux);
             id++;
         });
+        
+        $('#volver').click();
+    });
+    
+    $('#volver').click(function(){
+        $('#infoPage').hide();
+        $('#resultado').css('display', 'flex');
     });
     
     $('#saveImage').on("change", function(){
@@ -68,19 +74,27 @@ $(document).ready(function()    {
     
     $('body').on('keypress', 'input', function(args) {
         if (args.keyCode == 13) {
-            $("#search").click();
+            $('#search').click();
             return false;
         }
     });
+    
+    $('a').on('click', function(e){
+        var open = require("open");
+        
+        e.preventDefault();
+        
+        open(this.href);
+    });
 });
 
-
-
 $(document).on('click', '[name=guardar]', function () {
-        var id= $(this).attr('id');
-        var size = $(this).siblings('select').val();
-        var imagen = 'https://static.arasaac.org/pictograms/' + id + '_' + size + '.png'
+        var id= $(this).attr('idPicto');
+        var size = $(this).siblings('form').children('select').val();
+        var name = $(this).attr('picto');
+        var imagen = 'https://static.arasaac.org/pictograms/' + id + '_' + size + '.png';
         
+        $('#saveImage').attr("nwsaveas", name);
         $('#saveImage').data("img", imagen);
         $('#saveImage').click();
 });
@@ -92,8 +106,8 @@ $(document).on('click', '[name=pictograma]', function () {
         var web = "";
         var email = "";
         var palabras = "";
-        var url = "";
         var significado = "";
+        var url = "";
     
         obj = $(this).data("json");
     
@@ -111,11 +125,20 @@ $(document).on('click', '[name=pictograma]', function () {
             significado = obj.keywords[0].meaning;
         }
                    
-        url = '"https://static.arasaac.org/pictograms/' + obj.idPictogram + '_300.png"';
-        var html = '<div class="row" id="infoPage"><div class="col-4"><img id="' + id + '" src=' + url + ' class="img-thumbnail"><label>Tamaño: </label><select class="selectpicker"><option value="300">300</option><option value="500">500</option><option value="2500">2500</option></select><button type="button" id="' + obj.idPictogram + '" name="guardar">Descargar</button></div><div class="col-4"><label>' + obj.keywords[0].keyword + ': ' + significado + '</label><br/><label>Palabras relacionadas: </label><label>' + palabras + '</label></div><div class="col-4"><label>Autor: ' + autor + '</label><br/><label>Web: ' + web + '</label><label></label><br/><label>Email: ' + email + '</label><label></label><br/><label>Licencia: ' + obj.license + '</label></div></div>';
-    
-        $('#resultado').html(html);
+        url = 'https://static.arasaac.org/pictograms/' + obj.idPictogram + '_300.png';
+        
+        $('#wikiImg').attr('name', id);
+        $('#wikiImg').attr('src', url);
+        $('#wikiSave').attr('idPicto', obj.idPictogram);
+        $('#wikiSave').attr('picto', obj.keywords[0].keyword);
+        $('#wikiPicto').html(obj.keywords[0].keyword + ': ');
+        $('#wikiMeaning').html(significado);
+        $('#wikiWords').html(palabras);
+        $('#wikiAuthor').html(autor);
+        $('#wikiWeb').html(web);
+        $('#wikiWeb').attr('href', web);
+        $('#wikiEmail').html(email);
+        $('#wikiLicense').html(obj.license);
+        $('#resultado').hide();
+        $('#infoPage').css('display', 'flex');
 });
-
-
-

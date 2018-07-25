@@ -2,9 +2,32 @@ body {
     padding-top: 50px;
 }
 
-.starter-template {
-    padding:40px 15px;
-    text-align:center;
+span{
+    margin-bottom: 10px;
+}
+
+b{
+    margin-bottom: 10px;
+}
+
+.shownPicto{
+    margin-bottom: 10px;
+}
+
+.img-thumbnail{
+    border: 1px solid #17a2b8;
+}
+
+.selectpicker{
+    display: inline-block;
+    padding: .22rem .22rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+#language {
+    padding: .375rem .75rem;   
+    font-size: 1rem;
 }
 
 #saveImage {
@@ -12,15 +35,52 @@ body {
 }
 
 #barraBusqueda {
-    top: 5%;
+    text-align: center;
+    border-bottom-width: thin;
+    border-bottom-color: #17a2b8;
+    border-bottom-style: solid;
 }
 
 #resultado{
-    margin-top: 10%;
+    padding: 16px;
     text-align: center;
 }
 
 #infoPage{
+    padding: 16px;
     font-size: 15px;
     text-align: left;
+    display: none;
+}
+
+#volver{
+    color: #17a2b8;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    margin-left: 16px;
+    padding: .01rem .4rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+#volver:hover{
+    color: white;
+    background-color: #17a2b8;
+}
+
+#wikiDownload{
+    text-align: center;
+}
+
+@media (max-width: 575px){
+    .blankLine{
+        display: none;
+    }
+    
+    #searchText{
+		flex: 0 0 82%;	
+	}
 }
