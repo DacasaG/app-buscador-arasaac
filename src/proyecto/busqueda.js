@@ -12,11 +12,23 @@ function getJSON(url){
 }
 
 function saveImageto(path, imagen){
-        var fs= require('fs');
+        var fs = require('fs');
         var request = require('request');
-        request(imagen).on('error', function(err) {
+		var res = request(imagen);
+		
+		res.on('error', function(err) {
             console.log(err);
-        }).pipe(fs.createWriteStream(path));
+			$("#errorModal").modal();
+        });
+		res.on('response', function(response) {
+			if(response.headers['content-type'] == 'image/png'){
+				res.pipe(fs.createWriteStream(path));
+				$("#downloadModal").modal();
+			}
+			else{
+				$("#errorModal").modal();
+			}
+		});
 }
 
 $(document).ready(function()    {
@@ -34,14 +46,14 @@ $(document).ready(function()    {
         $('#resultado').html("");
         
         if(json == null){
-            html = '<span class="col-12">No hay resultados para la busqueda: "' + termino + '"</span>';
+            html = '<span class="col-12">No hay resultados para la búsqueda: "' + termino + '"</span>';
         }else{
             json.forEach(function(obj){
                 vector.push(obj);
                 url = '"https://static.arasaac.org/pictograms/' + obj.idPictogram + '_300.png"';
                 nombre = obj.keywords[0].keyword;
                 
-                html += '<div class="shownPicto col-4 col-sm-3 col-lg-2"><img id="' + id + '" src=' + url + ' class="img-thumbnail btn btn-outline-info" name="pictograma"><span>' + nombre + '</span><br/><form ><span>Size:  </span><select class="form-control-sm selectpicker btn-outline-info mb-2"><option value="300">300</option><option value="500">500</option><option value="2500">2500</option></select></form><button type="button" idPicto="' + obj.idPictogram + '" name="guardar" picto="' + nombre + ' " class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-save"></i> Download</button></div>';
+                html += '<div class="shownPicto col-4 col-sm-3 col-lg-2"><img id="' + id + '" src=' + url + ' class="img-thumbnail btn btn-outline-info" name="pictograma"><span>' + nombre + '</span><br/><form ><span>Size:  </span><select class="form-control-sm selectpicker btn-outline-info mb-2"><option value="300">300</option><option value="500">500</option><option value="2500">2500</option></select></form><button type="button" idPicto="' + obj.idPictogram + '" name="guardar" picto="' + nombre + '" class="btn btn-sm btn-outline-info mb-2"><i class="fa fa-save"></i> Download</button></div>';
                 
                 id++;
             });
@@ -68,6 +80,7 @@ $(document).ready(function()    {
     
     $('#saveImage').on("change", function(){
         var filePath = this.value;
+        $('#saveImage').val("");
         
         saveImageto(filePath, $(this).data("img"));
     });
@@ -85,6 +98,10 @@ $(document).ready(function()    {
         e.preventDefault();
         
         open(this.href);
+    });
+    
+    $('.modal').on('shown.bs.modal', function(event) {
+        $(this).find('.btn').focus();
     });
 });
 

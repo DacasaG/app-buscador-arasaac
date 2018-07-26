@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Proyecto</title>
+        <title>Buscador ARASAAC</title>
 
         <link rel="shortcut icon" href="">
         <link rel="stylesheet" href="../libraries/bootstrap-4.1.1/css/bootstrap.min.css">
@@ -81,6 +81,35 @@
                 <b>Licencia: </b><span id="wikiLicense"></span>
             </div>
         </div>
+        
+        <div class="modal fade" id="downloadModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-success">
+							Imagen descargada correctamente.
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-info" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="errorModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-danger">
+							<strong>¡ERROR!</strong> No se pudo descargar la imagen correctamente.
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-info" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
         <input type="file" nwsaveas="pictograma.png" id="saveImage">
 

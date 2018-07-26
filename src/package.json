@@ -1,5 +1,6 @@
 {
-    "name":"proyecto",
+    "name":"buscador",
+    "version": "1.0.0",
     "main":"views/index.html",
     "window":{
         "title": "buscador",
