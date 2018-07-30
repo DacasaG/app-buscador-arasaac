@@ -38,6 +38,12 @@ b{
     display: none;
 }
 
+
+    
+#searchTxt{
+    width: auto;	
+}
+
 #barraBusqueda {
     text-align: center;
     border-bottom-width: thin;
@@ -83,8 +89,4 @@ b{
     .blankLine{
         display: none;
     }
-    
-    #searchText{
-		flex: 0 0 82%;	
-	}
 }

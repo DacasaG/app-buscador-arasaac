@@ -58,7 +58,7 @@ $(document).ready(function()    {
                 id++;
             });
 
-            html = '<div class="row">' + html + '</div>';
+            html = '<div class="row style="width=100%;">' + html + '</div>';
         }
         
         $('#resultado').append(html);
